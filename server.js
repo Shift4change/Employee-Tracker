@@ -59,7 +59,7 @@ function addDept() {
             if(err){
                 throw err;
             }
-            console.log(`${departmentName} was added successfully!`)
+            console.table(`${departmentName} was added successfully!`)
             askQuestions();
         })
     });
@@ -71,10 +71,11 @@ function viewDept(){
         throw err;
 
     rows.forEach(function(row) {
-        console.log(`ID:${row.id} Dept Name: ${row.name}`)
+        console.table(`ID:${row.id} Dept Name: ${row.name}`)
     });
 
     });
+    askQuestions();
 }
 function addRole() {
     inquirer.prompt([
@@ -103,7 +104,7 @@ function addRole() {
             if(err){
                 throw err;
             }
-            console.log(`${roleName} was added successfully!`)
+            console.table(`${roleName} was added successfully!`)
             askQuestions();
         });
     });
@@ -117,62 +118,48 @@ function viewRole() {
         throw err;
 
         rows.forEach(function(row) {
-            console.log(`ID: ${row.id} | Title: ${row.title} | Salary: ${row.salary} | Dept Nr: ${row.department_id}`)
+            console.table(`ID: ${row.id} | Title: ${row.title} | Salary: ${row.salary} | Dept Nr: ${row.department_id}`)
         });
     });
+    askQuestions();
 }
 
 // this may or may not work
-function updateRole(){
-    connection.query("SELECT * FROM employee", function(err, data){
+function updateRole() {
+    connection.query("SELECT * FROM employee", function(err, rows){
         if(err){
             throw err;
+
         }
-        let employeeName = [];
-        data.forEach(function(employee){
-            let employeeObjects = {
-                value: employee.id,
-                name: employee.name
+
+    console.table(rows)
+    inquirer.prompt([
+        {
+            name: "id",
+            message: "Please enter Id of Employee you would like to update?",
+            type: "input"
+        },
+        {
+            name: "title",
+            message:"Please enter the New role id that you are assigning the employee to",
+            type:"input"
+        }
+
+    ]).then(function(res){
+        connection.query(`UPDATE employee SET role_id = ${res.title}`,
+        function(err) {
+            if(err) {
+                throw err;
             }
-            employeeName.push(employeeObjects)
-        })
-        inquirer.prompt({
-            name: "employee",
-            type: "list",
-            message: "Update which employee:",
-            choices: employeeName
-        }).then(function(choice){
-            connection.query("SELECT * FROM role", function(err, data){
-                if (err){
-                    throw err;
-                }
-                let roleName = []
-                data.forEach(function(role){
-                    let roleObjects = {
-                        value:role.id,
-                        name:role.title
-                    }
-                    roleName.push(roleObjects);
-                })
-                inquirer.prompt({
-                    name:"role",
-                    type:"list",
-                    message: "Add new role:",
-                    choices: roleName
-                }).then(function(newChoice){
-                    let roleId = newChoice.roleName;
-                    let employeeId = choice.employee;
-                    connection.query("UPDATE employee SET role = " + roleId + "WHERE id = " + employeeId, function(err, data){
-                        if(err){
-                            throw err;
-                            console.log("Role has been updated!!!!!!!!")
-                            askQuestions();
-                        }
-                    })
-                })
-            })
-        })
+            console.table("Update Role Successful")
+
+            askQuestions();
+        });
     });
+        
+    });
+
+
 }
 // read above comment!!!!!!!!!!!!!!!!!!
 function addEmployee() {
@@ -207,7 +194,7 @@ function addEmployee() {
             if(err){
                 throw err;
             }
-            console.log(`${employeeFirstName} ${employeeLastName} was added successfully!`);
+            console.table(`${employeeFirstName} ${employeeLastName} was added successfully!`);
 
             askQuestions();
         });
@@ -223,11 +210,11 @@ function viewEmployees() {
 
         rows.forEach(function(row){
 
-            console.log(`ID: ${row.id} | Fist Name ${row.first_name} | Last Name ${row.last_name} | Role id ${row.role_id} | Manager id ${row.manager_id}`)
+            console.table(`ID: ${row.id} | Fist Name ${row.first_name} | Last Name ${row.last_name} | Role id ${row.role_id} | Manager id ${row.manager_id}`)
         });
       
     });
 
-
+    askQuestions();
 }
 
