@@ -8,11 +8,16 @@ The data is stored with MySQL by creating a data base and utilizing tables.
 
 ## Usage 
 App is launched with 'node server.js'.
-Interaction is through simple command line prompts where the user inputs data and can update the data.
+Interaction is through simple command line prompts where the user inputs data for each table and can update the data.
+
 
 
 ## Demo
 ![img](/img/First.png)
+
+## Technologies used
+![img](https://img.shields.io/badge/JavaScript-used-green)
+![img](https://img.shields.io/badge/MySQL-used-blue)
 
 ## License
 
