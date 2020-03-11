@@ -109,6 +109,7 @@ function addRole() {
     });
 };
 
+/////grabing data from Mysql
 function viewRole() {
     connection.query("SELECT * FROM role",
     function(err,rows){
@@ -213,4 +214,20 @@ function addEmployee() {
     });
 };
 
+//////grabing data from Mysql 
+function viewEmployees() {
+    connection.query("SELECT * FROM employee",
+    function(err, rows) {
+        if(err)
+        throw err;
+
+        rows.forEach(function(row){
+
+            console.log(`ID: ${row.id} | Fist Name ${row.first_name} | Last Name ${row.last_name} | Role id ${row.role_id} | Manager id ${row.manager_id}`)
+        });
+      
+    });
+
+
+}
 
